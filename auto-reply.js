@@ -2,6 +2,7 @@
 const AWSXRay = require('aws-xray-sdk-core');
 const AWS = AWSXRay.captureAWS(require('aws-sdk'));
 const ses = new AWS.SES();
+const templateMapping = require('template-map.json');
 
 function sendTemplatedEmail(to, template) {
   return new Promise(function(resolve, reject) {
@@ -26,20 +27,12 @@ function sendTemplatedEmail(to, template) {
 
 }
 
-// event example
-const input = {
-  stateMachineArn: null,
-  body: {
-    type: 'salvation',
-    language: 'en',
-    firstName: 'Testy',
-    lastName: 'McTesterson',
-    email: 'testym@example.com',
-    commitment: 'yes'
-  }
-};
-
 exports.handler = (event, context, callback) => {
   console.log(event);
-
+  sendTemplatedEmail(event.email, templateMapping[event.language][event.type]).then(function(data) {
+    callback(null, data);
+  }).catch(function(err) {
+    console.error(err);
+    callback(err);
+  });
 };
