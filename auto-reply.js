@@ -22,9 +22,7 @@ function sendTemplatedEmail(to, template) {
       if (err) reject(Error(err)); // an error occurred
       else resolve(data); // successful response
     });
-
   });
-
 }
 
 exports.handler = (event, context, callback) => {
