@@ -1,0 +1,10 @@
+{
+  "en": {
+    "salvation": "EnSalvationResponse",
+    "recommitment": "EnRecommitmentResponse"
+  },
+  "es": {
+    "salvation": "EsSalvationResponse",
+    "recommitment": "EsSalvationResponse"
+  }
+}
