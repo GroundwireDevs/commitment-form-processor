@@ -18,7 +18,7 @@ function sendTemplatedEmail(to, template) {
       TemplateData: '{}'
     };
 
-    new AWS.SES().sendTemplatedEmail(params, function(err, data) {
+    ses.sendTemplatedEmail(params, function(err, data) {
       if (err) reject(Error(err)); // an error occurred
       else resolve(data); // successful response
     });
