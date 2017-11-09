@@ -35,12 +35,11 @@ const input = {
     firstName: 'Testy',
     lastName: 'McTesterson',
     email: 'testym@example.com',
-    madeCommitment: 'yes'
+    commitment: 'yes'
   }
 };
 
 exports.handler = (event, context, callback) => {
   console.log(event);
-
 
 };
