@@ -13,7 +13,7 @@ function sendTemplatedEmail(to, template) {
           to
         ]
       },
-      Source: process.env.FROM_NAME + ' <' + process.env.FROM_ADDRESS + '>',
+      Source: templateMapping[event.language][event.fromName] + ' <' + templateMapping[event.language][event.fromAddress] + '>',
       Template: template,
       TemplateData: '{}'
     };
