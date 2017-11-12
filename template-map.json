@@ -1,10 +1,14 @@
 {
   "en": {
     "salvation": "EnSalvationResponse",
-    "recommitment": "EnRecommitmentResponse"
+    "recommitment": "EnRecommitmentResponse",
+    "fromName": "Dan",
+    "fromAddress: "dan@jesuscares.com"
   },
   "es": {
     "salvation": "EsSalvationResponse",
     "recommitment": "EsSalvationResponse"
+    "fromName": "Dan",
+    "fromAddress: "dan@ajesúsleimporta.com"
   }
 }
