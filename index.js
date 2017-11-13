@@ -4,7 +4,7 @@ const AWS = AWSXRay.captureAWS(require('aws-sdk'));
 const ses = new AWS.SES();
 const templateMapping = require('./template-map.json');
 
-function sendTemplatedEmail(to, template) {
+function sendTemplatedEmail(to, template, source) {
   return new Promise(function(resolve, reject) {
 
     const params = {
@@ -13,7 +13,7 @@ function sendTemplatedEmail(to, template) {
           to
         ]
       },
-      Source: templateMapping[event.language][event.fromName] + ' <' + templateMapping[event.language][event.fromAddress] + '>',
+      Source: source,
       Template: template,
       TemplateData: '{}'
     };
@@ -27,7 +27,8 @@ function sendTemplatedEmail(to, template) {
 
 exports.handler = (event, context, callback) => {
   console.log(event);
-  sendTemplatedEmail(event.email, templateMapping[event.language][event.type]).then(function(data) {
+  const source = templateMapping[event.language][event.fromName] + ' <' + templateMapping[event.language][event.fromAddress] + '>';
+  sendTemplatedEmail(event.email, templateMapping[event.language][event.type], source).then(function(data) {
     callback(null, data);
   }).catch(function(err) {
     console.error(err);
