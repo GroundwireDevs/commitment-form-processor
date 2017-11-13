@@ -18,6 +18,7 @@ function sendTemplatedEmail(to, template, source) {
       TemplateData: '{}'
     };
 
+    console.log(templateMapping);
     console.log(params);
 
     ses.sendTemplatedEmail(params, function(err, data) {
