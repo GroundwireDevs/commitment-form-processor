@@ -2,7 +2,7 @@
 const AWSXRay = require('aws-xray-sdk');
 const AWS = AWSXRay.captureAWS(require('aws-sdk'));
 const ses = new AWS.SES();
-const templateMapping = require('template-map.json');
+const templateMapping = require('./template-map.json');
 
 function sendTemplatedEmail(to, template) {
   return new Promise(function(resolve, reject) {
