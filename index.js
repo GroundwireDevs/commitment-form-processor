@@ -25,6 +25,7 @@ function sendTemplatedEmail(to, template, source) {
       if (err) reject(Error(err)); // an error occurred
       else resolve(data); // successful response
     });
+    
   });
 }
 
