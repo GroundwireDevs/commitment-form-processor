@@ -1,0 +1,10 @@
+version: 0.2
+
+phases:
+  build:
+    commands:
+      - ls -l -R # Logs all files to console
+
+artifacts:
+  files:
+    - '**/*' # Sets all the files to be in the artifacts file
