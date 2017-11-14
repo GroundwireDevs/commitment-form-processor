@@ -18,6 +18,9 @@ function setAuth() {
     };
 
     doc.useServiceAccountAuth(creds, function(err, data) {
+      if (err) console.log(err);
+      else console.log(data);
+      
       if (err) reject(Error(err));
       else resolve(data);
     });
