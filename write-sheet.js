@@ -25,8 +25,35 @@ function setAuth() {
   });
 }
 
+function getAllCells() {
+  return new Promise(function(resolve, reject) {
+
+    const options = {
+      'min-row': 1,
+      'max-col': 1,
+      'return-empty': false
+    };
+
+    doc.getCells(1, options, function(err, cells) {
+      if (err) reject(Error(err));
+      else resolve(cells);
+    });
+
+  });
+}
+
+function writeRow(cells) {
+    return new Promise(function(resolve, reject) {
+
+      const nextRow = cells.length + 1;
+      console.log('Next empty row is ' + nextRow);
+
+
+    });
+}
+
 function processEvent(event, context, callback) {
-  setAuth.then()
+  setAuth.then(getAllCells).then(findNextEmptyRow).then()
 }
 
 exports.handler = (event, context, callback) => {
