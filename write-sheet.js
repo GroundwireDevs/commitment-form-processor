@@ -12,48 +12,38 @@ var sheet;
 function setAuth() {
   return new Promise(function(resolve, reject) {
 
-  var creds = {
-    client_email: process.env.client_email,
-    private_key: decrypted
-  };
-
-  doc.useServiceAccountAuth(creds, function(err, data) {
-    if (err) reject(Error(err));
-    else resolve(data);
-  });
-
-  });
-}
-
-function getAllCells() {
-  return new Promise(function(resolve, reject) {
-
-    const options = {
-      'min-row': 1,
-      'max-col': 1,
-      'return-empty': false
+    var creds = {
+      client_email: process.env.client_email,
+      private_key: decrypted
     };
 
-    doc.getCells(1, options, function(err, cells) {
+    doc.useServiceAccountAuth(creds, function(err, data) {
       if (err) reject(Error(err));
-      else resolve(cells);
+      else resolve(data);
     });
 
   });
 }
 
-function writeRow(cells) {
-    return new Promise(function(resolve, reject) {
+function writeRow(event) {
+  return new Promise(function(resolve, reject) {
 
-      const nextRow = cells.length + 1;
-      console.log('Next empty row is ' + nextRow);
-
-
+    doc.addRow(1, event, function(err, data) {
+      if (err) reject(Error(err));
+      else resolve(data);
     });
+
+  });
 }
 
 function processEvent(event, context, callback) {
-  setAuth.then(getAllCells).then(writeRow).then()
+  setAuth.then(function() {
+      return event;
+    }).then(writeRow(event)).then(function(data) {
+      callback(data);
+    }).catch(function(err) {
+      callback(err);
+    });
 }
 
 exports.handler = (event, context, callback) => {
