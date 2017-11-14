@@ -30,7 +30,7 @@ function writeRow(event) {
 
     doc.addRow(1, event, function(err, data) {
       if (err) {
-        console.error(+err);
+        console.error(err);
         reject(Error(err));
       }
       else {
