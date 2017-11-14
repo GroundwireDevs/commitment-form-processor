@@ -8,7 +8,6 @@ let decrypted;
 
 // spreadsheet key is the long id in the sheets URL
 var doc = new GoogleSpreadsheet(process.env.SPREADSHEET_KEY);
-var sheet;
 
 function setAuth() {
   return new Promise(function(resolve, reject) {
