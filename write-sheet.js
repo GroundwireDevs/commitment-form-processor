@@ -53,7 +53,7 @@ function writeRow(cells) {
 }
 
 function processEvent(event, context, callback) {
-  setAuth.then(getAllCells).then(findNextEmptyRow).then()
+  setAuth.then(getAllCells).then(writeRow).then()
 }
 
 exports.handler = (event, context, callback) => {
