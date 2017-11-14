@@ -31,6 +31,8 @@ function sendTemplatedEmail(to, template, source) {
 
 exports.handler = (event, context, callback) => {
   console.log(event);
+  console.log(event.langauge);
+  console.log(event.fromName);
   console.log(templateMapping[event.language][[event.fromName]]);
   const source = templateMapping[event.language][event.fromName] + ' <' + templateMapping[event.language][event.fromAddress] + '>';
   sendTemplatedEmail(event.email, templateMapping[event.language][event.type], source).then(function(data) {
