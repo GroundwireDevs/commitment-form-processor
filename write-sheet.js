@@ -38,7 +38,7 @@ function writeRow(event) {
 }
 
 function processEvent(event, context, callback) {
-  decrypted.split('\\n').concat().join('\n');
+  decrypted = decrypted.split('\\n').concat().join('\n');
   setAuth().then(function() {
       return event;
     }).then(writeRow(event)).then(function(data) {
