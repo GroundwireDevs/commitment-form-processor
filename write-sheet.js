@@ -28,9 +28,15 @@ function setAuth() {
 function writeRow(event) {
   return new Promise(function(resolve, reject) {
 
+    console.log(event);
     doc.addRow(1, event, function(err, data) {
-      if (err) reject(Error(err));
-      else resolve(data);
+      if (err) {
+        console.error(err);
+        reject(Error(err));
+      }
+      else {
+        resolve(data);
+      }
     });
 
   });
