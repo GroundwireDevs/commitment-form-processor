@@ -38,7 +38,7 @@ function writeRow(event) {
 }
 
 function processEvent(event, context, callback) {
-  setAuth.then(function() {
+  setAuth().then(function() {
       return event;
     }).then(writeRow(event)).then(function(data) {
       callback(data);
