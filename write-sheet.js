@@ -24,9 +24,27 @@ function getHeader() {
       if (err) {
         reject(Error(err));
       } else {
-        resolve(data);
+        resolve(data.sheets[0].data[0].rowData[0].values);
       }
     });
+
+  });
+}
+
+function mapColumns(dataPackage) {
+  return new Promise(function(resolve, reject) {
+
+  let mapping = {};
+  for (const property in dataPackage.event) {
+    let i = 0;
+    dataPackage.header.forEach(function(cell) {
+      if (property === cell.formattedValue) {
+        mapping[property] = i;
+      }
+      i++;
+    });
+  }
+  console.log(mapping);
 
   });
 }
@@ -45,8 +63,9 @@ function authorize(event, context, callback) {
       callback(err);
     } else {
       getHeader().then(function(data) {
-      }).catch(function(err) {
-        console.error(err);
+        const dataPackage = {header: data, event: event};
+        return dataPackage;
+      }).then(mapColumns).catch(function(err) {
         callback(err);
       });
     }
