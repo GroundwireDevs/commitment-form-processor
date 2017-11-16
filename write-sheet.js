@@ -1,40 +1,42 @@
 /*jshint esversion: 6 */
+let jwtClient;
+
 const AWSXRay = require('aws-xray-sdk-core');
 const AWS = AWSXRay.captureAWS(require('aws-sdk'));
 const google = require('googleapis');
-const sheets = google.sheets('v4');
+const sheets = google.sheets({
+  version: 'v4',
+  auth: jwtClient
+});
 
 const encrypted = process.env['private_key'];
 let decrypted;
 
-function processEvent(event, context, callback) {
-  let jwtClient = new google.auth.JWT(
-    process.env.CLIENT_EMAIL,
-    null,
-    decrypted.split('\\n').concat().join('\n'), ['https://www.googleapis.com/auth/spreadsheets'], // an array of auth scopes
-    null
-  );
+function mapColumns(event) {
 
-  jwtClient.authorize(function(err, tokens) {
-    if (err) {
-      console.error(err);
-      callback(err);
-    }
+}
 
-    // Make an authorized request
-    sheets.spreadsheets.get({
-      auth: jwtClient
-    }, function(err, data) {
-      // handle err and response
+function authorize(event, context, callback) {
+    jwtClient = new google.auth.JWT(
+      process.env.CLIENT_EMAIL,
+      null,
+      decrypted.split('\\n').concat().join('\n'), ['https://www.googleapis.com/auth/spreadsheets'], // an array of auth scopes
+      null
+    );
+
+    jwtClient.authorize(function(err, tokens) {
+      if (err) {
+        console.error(err);
+        callback(err);
+      } else {
+        mapColumns(event);
+      }
     });
-
-  });
-
 }
 
 exports.handler = (event, context, callback) => {
   if (decrypted) {
-    processEvent(event, context, callback);
+    authorize(event, context, callback);
   } else {
     // Decrypt code should run once and variables stored outside of the function
     // handler so that these are decrypted once per container
@@ -47,7 +49,7 @@ exports.handler = (event, context, callback) => {
         return callback(err);
       }
       decrypted = data.Plaintext.toString('ascii');
-      processEvent(event, context, callback);
+      authorize(event, context, callback);
     });
   }
 };
