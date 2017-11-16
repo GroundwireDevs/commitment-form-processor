@@ -11,7 +11,7 @@ function processEvent(event, context, callback) {
   let jwtClient = new google.auth.JWT(
     process.env.CLIENT_EMAIL,
     null,
-    decrypted.split('\\n').concat().join('\n'), ['https://www.googleapis.com/auth/sheets'], // an array of auth scopes
+    decrypted.split('\\n').concat().join('\n'), ['https://www.googleapis.com/auth/spreadsheets'], // an array of auth scopes
     null
   );
 
