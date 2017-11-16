@@ -39,7 +39,7 @@ function mapColumns(dataPackage) {
     let i = 1;
     dataPackage.header.forEach(function(cell) {
       if (property === cell.formattedValue) {
-        mapping[property] = i;
+        mapping[i] = property;
       }
       i++;
     });
