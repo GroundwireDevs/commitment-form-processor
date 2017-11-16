@@ -44,8 +44,7 @@ function authorize(event, context, callback) {
       console.error(err);
       callback(err);
     } else {
-      getHeader(event).then(function(data) {
-        console.log(data);
+      getHeader().then(function(data) {
       }).catch(function(err) {
         console.error(err);
         callback(err);
