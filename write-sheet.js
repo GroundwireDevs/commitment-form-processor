@@ -16,6 +16,7 @@ function mapColumns(event) {
   return new Promise(function(resolve, reject) {
 
     sheets.spreadsheets.get({
+      auth: jwtClient,
       spreadsheetId: process.env.SPREADSHEET_ID,
       includeGridData: true,
       ranges: 'A1:Z1'
