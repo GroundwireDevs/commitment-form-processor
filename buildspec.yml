@@ -10,7 +10,8 @@ phases:
     commands:
       - echo Running post_build commands
       - mkdir build-output
-      - cp -R folder1/myfile.js build-output
+      - cp -R *.js build-output
+      - cp -R template-map.json build-output
       - mkdir -p build-output/node_modules
       - cp -R node_modules/* build-output/node_modules
       - cd build-output/
