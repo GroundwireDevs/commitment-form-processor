@@ -13,25 +13,44 @@ const encrypted = process.env['private_key'];
 let decrypted;
 
 function mapColumns(event) {
+  return new Promise(function(resolve, reject) {
 
+    sheets.spreadsheets.get({
+      spreadsheetId: process.env.SPREADSHEET_ID,
+      includeGridData: true,
+      ranges: 'A1:Z1'
+    }, function(err, data) {
+      if (err) {
+        reject(Error(err));
+      } else {
+        resolve(data);
+      }
+    });
+
+  });
 }
 
 function authorize(event, context, callback) {
-    jwtClient = new google.auth.JWT(
-      process.env.CLIENT_EMAIL,
-      null,
-      decrypted.split('\\n').concat().join('\n'), ['https://www.googleapis.com/auth/spreadsheets'], // an array of auth scopes
-      null
-    );
+  jwtClient = new google.auth.JWT(
+    process.env.CLIENT_EMAIL,
+    null,
+    decrypted.split('\\n').concat().join('\n'), ['https://www.googleapis.com/auth/spreadsheets'], // an array of auth scopes
+    null
+  );
 
-    jwtClient.authorize(function(err, tokens) {
-      if (err) {
+  jwtClient.authorize(function(err, tokens) {
+    if (err) {
+      console.error(err);
+      callback(err);
+    } else {
+      mapColumns(event).then(function(data) {
+        console.log(data);
+      }).catch(function(err) {
         console.error(err);
         callback(err);
-      } else {
-        mapColumns(event);
-      }
-    });
+      });
+    }
+  });
 }
 
 exports.handler = (event, context, callback) => {
