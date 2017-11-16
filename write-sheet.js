@@ -12,7 +12,7 @@ const sheets = google.sheets({
 const encrypted = process.env.private_key;
 let decrypted;
 
-function mapColumns(event) {
+function getHeader() {
   return new Promise(function(resolve, reject) {
 
     sheets.spreadsheets.get({
@@ -44,7 +44,7 @@ function authorize(event, context, callback) {
       console.error(err);
       callback(err);
     } else {
-      mapColumns(event).then(function(data) {
+      getHeader(event).then(function(data) {
         console.log(data);
       }).catch(function(err) {
         console.error(err);
