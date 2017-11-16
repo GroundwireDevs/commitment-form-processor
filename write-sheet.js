@@ -36,7 +36,7 @@ function mapColumns(dataPackage) {
 
   let mapping = {};
   for (const property in dataPackage.event) {
-    let i = 0;
+    let i = 1;
     dataPackage.header.forEach(function(cell) {
       if (property === cell.formattedValue) {
         mapping[property] = i;
@@ -45,6 +45,7 @@ function mapColumns(dataPackage) {
     });
   }
   console.log(mapping);
+  resolve(mapping);
 
   });
 }
