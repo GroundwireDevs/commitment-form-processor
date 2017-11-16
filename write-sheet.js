@@ -36,10 +36,10 @@ function mapColumns(dataPackage) {
 
   let mapping = {};
   for (const property in dataPackage.event) {
-    let i = 1;
+    let i = 0;
     dataPackage.header.forEach(function(cell) {
       if (property === cell.formattedValue) {
-        mapping[property] = i;
+        mapping[i] = property;
       }
       i++;
     });
