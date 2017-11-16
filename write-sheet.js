@@ -9,7 +9,7 @@ const sheets = google.sheets({
   auth: jwtClient
 });
 
-const encrypted = process.env['private_key'];
+const encrypted = process.env.private_key;
 let decrypted;
 
 function mapColumns(event) {
