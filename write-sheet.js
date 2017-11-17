@@ -34,16 +34,17 @@ function getHeader() {
 function mapColumns(dataPackage) {
   return new Promise(function(resolve, reject) {
 
-  let mapping = {};
-  for (const property in dataPackage.event) {
-    let i = 0;
-    dataPackage.header.forEach(function(cell) {
+  let row = [];
+  dataPackage.header.foreach(function(cell) {
+    let foundProperty = false;
+    for (const property in dataPackage.event) {
       if (property === cell.formattedValue) {
-        mapping[i] = property;
+        row.push(property);
       }
-      i++;
-    });
-  }
+    }
+    if (foundProperty === false) row.push(null);
+  });
+
   console.log(mapping);
   resolve(mapping);
 
