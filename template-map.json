@@ -1,0 +1,14 @@
+{
+  "en": {
+    "salvation": "EnSalvationResponse",
+    "recommitment": "EnRecommitmentResponse",
+    "fromName": "Dan",
+    "fromAddress": "dan@jesuscares.com"
+  },
+  "es": {
+    "salvation": "EsSalvationResponse",
+    "recommitment": "EsSalvationResponse",
+    "fromName": "A Jesús le Importa",
+    "fromAddress": "informacion@xn--ajessleimporta-orb.com"
+  }
+}

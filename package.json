@@ -1,0 +1,24 @@
+{
+  "name": "commitment-form-processor",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/groundwiredevs/commitment-form-processor.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/groundwiredevs/commitment-form-processor/issues"
+  },
+  "homepage": "https://github.com/groundwiredevs/commitment-form-processor#readme",
+  "dependencies": {
+    "aws-sdk": "^2.152.0",
+    "aws-xray-sdk-core": "^1.1.6",
+    "googleapis": "^22.2.0"
+  }
+}
