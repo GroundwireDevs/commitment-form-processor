@@ -1,23 +1,10 @@
-# https://stackoverflow.com/questions/44853819/issue-creating-zip-file-through-aws-codebuild-for-nodejs-lambda
 version: 0.2
 
 phases:
   build:
     commands:
-      - echo Build started on `date`
-      - npm install
-  post_build:
-    commands:
-      - echo Running post_build commands
-      - mkdir build-output
-      - cp -R *.js build-output
-      - cp -R template-map.json build-output
-      - mkdir -p build-output/node_modules
-      - cp -R node_modules/* build-output/node_modules
-      - cd build-output/
-      - zip -qr build-output.zip ./*
-      - mv build-output.zip ../
-      - echo Build completed on `date`
+      - ls -l # Logs root directory
+
 artifacts:
   files:
-    - build-output.zip
+    - '**/*' # Sets all the files to be in the artifacts file
