@@ -35,7 +35,7 @@ function mapColumns(dataPackage) {
   return new Promise(function(resolve, reject) {
 
   let row = [];
-  dataPackage.header.foreach(function(cell) {
+  dataPackage.header.forEach(function(cell) {
     let foundProperty = false;
     for (const property in dataPackage.event) {
       if (property === cell.formattedValue) {
