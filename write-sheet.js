@@ -32,11 +32,11 @@ function getHeader() {
 }
 
 function getFormattedDate() {
-  var today = new Date();
-  var dd = today.getDate();
-  var mm = today.getMonth() + 1; //January is 0!
+  const today = new Date();
+  let dd = today.getDate();
+  let mm = today.getMonth() + 1; //January is 0!
+  const yyyy = today.getFullYear();
 
-  var yyyy = today.getFullYear();
   if (dd < 10) {
     dd = '0' + dd;
   }
