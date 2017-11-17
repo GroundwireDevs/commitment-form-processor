@@ -31,24 +31,40 @@ function getHeader() {
   });
 }
 
+function getFormattedDate() {
+  var today = new Date();
+  var dd = today.getDate();
+  var mm = today.getMonth() + 1; //January is 0!
+
+  var yyyy = today.getFullYear();
+  if (dd < 10) {
+    dd = '0' + dd;
+  }
+  if (mm < 10) {
+    mm = '0' + mm;
+  }
+  return mm + '/' + dd + '/' + yyyy;
+}
+
 function mapColumns(dataPackage) {
   return new Promise(function(resolve, reject) {
 
-  let row = [];
-  dataPackage.header.forEach(function(cell) {
-    let foundProperty = false;
-    for (const property in dataPackage.event) {
-      if (property === cell.formattedValue) {
-        row.push(property);
-        foundProperty = true;
-        break;
-      }
-    }
-    if (foundProperty === false) row.push(null);
-  });
+    let row = [];
+    dataPackage.event.date = getFormattedDate();
+      dataPackage.header.forEach(function(cell) {
+        let foundProperty = false;
+        for (const property in dataPackage.event) {
+          if (property === cell.formattedValue) {
+            row.push(dataPackage.event[property]);
+            foundProperty = true;
+            break;
+          }
+        }
+        if (foundProperty === false) row.push(null);
+      });
 
-  console.log(row);
-  resolve(row);
+    console.log(row);
+    resolve(row);
 
   });
 }
@@ -67,7 +83,10 @@ function authorize(event, context, callback) {
       callback(err);
     } else {
       getHeader().then(function(data) {
-        const dataPackage = {header: data, event: event};
+        const dataPackage = {
+          header: data,
+          event: event
+        };
         return dataPackage;
       }).then(mapColumns).catch(function(err) {
         callback(err);
