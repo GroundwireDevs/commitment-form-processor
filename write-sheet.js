@@ -81,7 +81,7 @@ function appendRow(row) {
       resource: {
         range: 'A:Z',
         majorDimension: 'ROWS',
-        values: row
+        values: [row]
       }
     }, function(err, data) {
       if (err) {
