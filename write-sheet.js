@@ -51,20 +51,45 @@ function mapColumns(dataPackage) {
 
     let row = [];
     dataPackage.event.date = getFormattedDate();
-      dataPackage.header.forEach(function(cell) {
-        let foundProperty = false;
-        for (const property in dataPackage.event) {
-          if (property === cell.formattedValue) {
-            row.push(dataPackage.event[property]);
-            foundProperty = true;
-            break;
-          }
+    dataPackage.header.forEach(function(cell) {
+      let foundProperty = false;
+      for (const property in dataPackage.event) {
+        if (property === cell.formattedValue) {
+          row.push(dataPackage.event[property]);
+          foundProperty = true;
+          break;
         }
-        if (foundProperty === false) row.push(null);
-      });
+      }
+      if (foundProperty === false) row.push(null);
+    });
 
     console.log(row);
     resolve(row);
+
+  });
+}
+
+function appendRow(row) {
+  return new Promise(function(resolve, reject) {
+
+    sheets.spreadsheets.values.append({
+      auth: jwtClient,
+      spreadsheetId: process.env.SPREADSHEET_ID,
+      insertDataOption: INSERT_ROWS,
+      valueInputOption: USER_ENTERED,
+      resource: {
+        range: 'A:Z',
+        majorDimension: ROWS,
+        values: row
+      }
+    }, function(err, data) {
+      if (err) {
+        console.error(err);
+        reject(Error(err));
+      } else {
+        resolve(data);
+      }
+    });
 
   });
 }
@@ -88,7 +113,9 @@ function authorize(event, context, callback) {
           event: event
         };
         return dataPackage;
-      }).then(mapColumns).catch(function(err) {
+      }).then(mapColumns).then(appendRow).then(function(data) {
+        callback(data);
+      }).catch(function(err) {
         callback(err);
       });
     }
