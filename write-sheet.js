@@ -45,8 +45,8 @@ function mapColumns(dataPackage) {
     if (foundProperty === false) row.push(null);
   });
 
-  console.log(mapping);
-  resolve(mapping);
+  console.log(row);
+  resolve(row);
 
   });
 }
