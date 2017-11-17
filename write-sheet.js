@@ -75,11 +75,11 @@ function appendRow(row) {
     sheets.spreadsheets.values.append({
       auth: jwtClient,
       spreadsheetId: process.env.SPREADSHEET_ID,
-      insertDataOption: INSERT_ROWS,
-      valueInputOption: USER_ENTERED,
+      insertDataOption: 'INSERT_ROWS',
+      valueInputOption: 'USER_ENTERED',
       resource: {
         range: 'A:Z',
-        majorDimension: ROWS,
+        majorDimension: 'ROWS',
         values: row
       }
     }, function(err, data) {
