@@ -40,6 +40,8 @@ function mapColumns(dataPackage) {
     for (const property in dataPackage.event) {
       if (property === cell.formattedValue) {
         row.push(property);
+        foundProperty = true;
+        break;
       }
     }
     if (foundProperty === false) row.push(null);
