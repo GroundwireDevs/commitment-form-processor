@@ -63,7 +63,6 @@ function mapColumns(dataPackage) {
       if (foundProperty === false) row.push(null);
     });
 
-    console.log(row);
     resolve(row);
 
   });
@@ -85,7 +84,6 @@ function appendRow(row) {
       }
     }, function(err, data) {
       if (err) {
-        console.error(err);
         reject(Error(err));
       } else {
         resolve(data);
@@ -105,7 +103,6 @@ function authorize(event, context, callback) {
 
   jwtClient.authorize(function(err, tokens) {
     if (err) {
-      console.error(err);
       callback(err);
     } else {
       getHeader().then(function(data) {
