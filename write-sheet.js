@@ -75,6 +75,7 @@ function appendRow(row) {
     sheets.spreadsheets.values.append({
       auth: jwtClient,
       spreadsheetId: process.env.SPREADSHEET_ID,
+      range: 'A:Z',
       insertDataOption: 'INSERT_ROWS',
       valueInputOption: 'USER_ENTERED',
       resource: {
