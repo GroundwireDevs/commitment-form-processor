@@ -115,7 +115,7 @@ function authorize(event, context, callback) {
         };
         return dataPackage;
       }).then(mapColumns).then(appendRow).then(function(data) {
-        callback(data);
+        callback(null, data);
       }).catch(function(err) {
         callback(err);
       });
