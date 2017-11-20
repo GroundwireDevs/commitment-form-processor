@@ -37,6 +37,7 @@ function getHeader() {
 // Gets a date string in mm/dd/yyyy format
 function getFormattedDate() {
   const today = new Date();
+  today.setHours(today.getHours() - 6); // Set date to Mountain Standard Time (subtact six hours)
   let dd = today.getDate();
   let mm = today.getMonth() + 1; // January is 0
   const yyyy = today.getFullYear();
