@@ -3,10 +3,11 @@
         "es6": true,
         "node": true
     },
-    "extends": "eslint:recommended",
+    "extends": ["eslint:recommended", "plugin:node/recommended", "plugin:security/recommended"],
     "parserOptions": {
         "sourceType": "module"
     },
+    "plugins": ["node", "security"],
     "rules": {
         "indent": [
             "error",
@@ -23,6 +24,10 @@
         "semi": [
             "error",
             "always"
+        ],
+        "node/exports-style": [
+          "error",
+          "module.exports"
         ]
     }
 }
