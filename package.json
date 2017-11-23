@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jasmine"
   },
   "repository": {
     "type": "git",
@@ -20,5 +20,8 @@
     "aws-sdk": "^2.152.0",
     "aws-xray-sdk-core": "^1.1.6",
     "googleapis": "^22.2.0"
+  },
+  "devDependencies": {
+    "jasmine": "^2.8.0"
   }
 }
