@@ -1,4 +1,6 @@
-let jwtClient;
+'use strict';
+
+	let jwtClient;
 
 // Get required libraries
 const AWSXRay = require('aws-xray-sdk-core');
