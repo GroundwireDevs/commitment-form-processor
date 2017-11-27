@@ -5,6 +5,9 @@ phases:
     commands:
       - ls -l # Logs root directory
       - chmod -R 777 *
+  post_build:
+    commands:
+      - npm test
 
 artifacts:
   files:
