@@ -107,7 +107,7 @@ function authorize(event, context, callback) {
 		null
 	);
 
-	jwtClient.authorize(function(err, tokens) {
+	jwtClient.authorize(function(err) {
 		if (err) {
 			callback(err);
 		} else {
