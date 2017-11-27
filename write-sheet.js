@@ -48,7 +48,7 @@ function getFormattedDate() {
 
 // Maps the input data to the required ListValue format https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#google.protobuf.ListValue
 function mapColumns(dataPackage) {
-	return new Promise(function(resolve, reject) {
+	return new Promise(function(resolve) {
 
 		let row = [];
 		// Sets the first column as the date column and adds the date string
