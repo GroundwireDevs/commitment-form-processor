@@ -37,7 +37,177 @@ Resources:
     Type: 'AWS::Serverless::Api'
     Properties:
       StageName: prod
-      DefinitionUri: 's3://groundwire/commitment-form-processor/JesusCaresAPI-prod-swagger-apigateway.yaml'
+      DefinitionBody: |-
+        ---
+        swagger: "2.0"
+        info:
+          version: "2017-09-07T16:55:49Z"
+          title: "JesusCares API"
+        basePath: "/prod"
+        schemes:
+        - "https"
+        paths:
+          /rest/forms:
+            post:
+              description: "Accepts commitment form submissions for processing."
+              consumes:
+              - "application/json"
+              produces:
+              - "application/json"
+              parameters:
+              - in: "body"
+                name: "CommitmentFormJSON"
+                description: "Commitment form values to be submitted."
+                required: true
+                schema:
+                  $ref: "#/definitions/CommitmentFormJSON"
+              responses:
+                200:
+                  description: "Request was successful. Form will be processed."
+                  schema:
+                    $ref: "#/definitions/Response"
+                400:
+                  description: "Request was unsuccessful, client error"
+                  schema:
+                    $ref: "#/definitions/Response"
+                500:
+                  description: "Request was unsuccessful, server error"
+                  schema:
+                    $ref: "#/definitions/Response"
+              x-amazon-apigateway-integration:
+                credentials: !Ref ApiGatewayStepFunctionsRole
+                responses:
+                  4\d{2}:
+                    statusCode: "400"
+                    responseTemplates:
+                      application/json: "#set($inputRoot = $input.path('$'))\n{\n  \"success\"\
+                        \ : false,\n  \"message\" : \"Request was not successful, client error.\"\
+                        \n}"
+                  5\d{2}:
+                    statusCode: "500"
+                    responseTemplates:
+                      application/json: "#set($inputRoot = $input.path('$'))\n{\n  \"success\"\
+                        \ : false,\n  \"message\" : \"Request was not successful, server error.\"\
+                        \n}"
+                  2\d{2}:
+                    statusCode: "200"
+                    responseTemplates:
+                      application/json: "#set($inputRoot = $input.path('$'))\n{\n  \"success\"\
+                        \ : true,\n  \"message\" : 'Request successful'\n}"
+                uri:
+                  !Join
+                    - ''
+                    - - 'arn:aws:apigateway:'
+                    - - !Ref "AWS::Region"
+                    - - ':states:action/StartExecution'
+                passthroughBehavior: "when_no_templates"
+                httpMethod: "POST"
+                requestTemplates:
+                  !Join
+                    - ''
+                    - - 'application/json: "{\n    \"input\": \"$util.escapeJavaScript($input.json('$'))\"\
+                      ,\n    \"stateMachineArn\": '
+                      - !Ref StateMachine
+                      - \\n} "
+                type: "aws"
+        definitions:
+          Response:
+            type: "object"
+            properties:
+              success:
+                type: "boolean"
+              message:
+                type: "string"
+            title: "CommitmentFormJSON"
+          CommitmentFormJSON:
+            type: "object"
+            required:
+            - "commitment"
+            - "email"
+            - "first-name"
+            - "language"
+            - "last-name"
+            - "type"
+            properties:
+              language:
+                type: "string"
+              type:
+                type: "string"
+              first-name:
+                type: "string"
+              last-name:
+                type: "string"
+              email:
+                type: "string"
+              commitment:
+                type: "string"
+              age:
+                type: "integer"
+            title: "CommitmentFormJSON"
+          Empty:
+            type: "object"
+            title: "Empty Schema"
+        x-amazon-apigateway-documentation:
+          version: "1"
+          createdDate: "2017-11-27T21:15:33Z"
+          documentationParts:
+          - location:
+              type: "METHOD"
+              path: "/rest/forms"
+              method: "POST"
+            properties:
+              description: "Accepts commitment form submissions for processing."
+          - location:
+              type: "MODEL"
+              name: "Empty"
+            properties:
+              title: "Empty Schema"
+          - location:
+              type: "REQUEST_BODY"
+              path: "/rest/forms"
+              method: "POST"
+            properties:
+              description: "Commitment form values to be submitted."
+          - location:
+              type: "RESOURCE"
+              path: "/rest/forms"
+            properties:
+              description: "Handles commitment forms."
+          - location:
+              type: "RESPONSE"
+              path: "/rest/donate"
+              method: "OPTIONS"
+              statusCode: "200"
+            properties:
+              description: "200 response"
+          - location:
+              type: "RESPONSE"
+              path: "/rest/donate"
+              method: "POST"
+              statusCode: "200"
+            properties:
+              description: "200 response"
+          - location:
+              type: "RESPONSE"
+              path: "/rest/forms"
+              method: "POST"
+              statusCode: "200"
+            properties:
+              description: "Request was successful. Form will be processed."
+          - location:
+              type: "RESPONSE"
+              path: "/rest/forms"
+              method: "POST"
+              statusCode: "400"
+            properties:
+              description: "Request was unsuccessful, client error"
+          - location:
+              type: "RESPONSE"
+              path: "/rest/forms"
+              method: "POST"
+              statusCode: "500"
+            properties:
+              description: "Request was unsuccessful, server error"
       CacheClusterEnabled: false
       Variables:
         name: prod
