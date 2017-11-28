@@ -1,0 +1,84 @@
+AWSTemplateFormatVersion: 2010-09-09
+Transform: 'AWS::Serverless-2016-10-31'
+Resources:
+  ReplyFunction:
+    Type: 'AWS::Serverless::Function'
+    Properties:
+      Handler: src/reply.handler
+      Runtime: nodejs6.10
+      CodeUri: 's3://groundwire/commitment-form-processor/commitment-form-processor.zip'
+      Description: Sends an email to the user after commitment.
+      MemorySize: 128
+      Timeout: 3
+      Role: !Ref ReplyFunctionRole
+      Tags:
+        group: jesuscares
+      Tracing: Active
+  WriteSheetFunction:
+    Type: 'AWS::Serverless::Function'
+    Properties:
+      Handler: src/write-sheet.handler
+      Runtime: nodejs6.10
+      CodeUri: 's3://groundwire/commitment-form-processor/commitment-form-processor.zip'
+      Description: Writes a Google sheet with a user's commitment form information.
+      MemorySize: 128
+      Timeout: 10
+      Role: !Ref WriteSheetFunctionRole
+      Environment:
+        Variables:
+          CLIENT_EMAIL: !Ref GoogleClientEmail
+          SPREADSHEET_ID: !Ref GoogleSpreadsheetId
+          private_key: !Ref GooglePrivateKeyEncrypted
+      Tags:
+        group: jesuscares
+      Tracing: Active
+      KmsKeyArn: !Ref KmsKeyArn
+  Api:
+    Type: 'AWS::Serverless::Api'
+    Properties:
+      StageName: prod
+      DefinitionUri: 's3://groundwire/commitment-form-processor/JesusCaresAPI-prod-swagger-apigateway.yaml'
+      CacheClusterEnabled: false
+      Variables:
+        name: prod
+  StateMachine:
+    Type: 'AWS::StepFunctions::StateMachine'
+    Properties:
+      DefinitionString: |-
+        {
+          "Comment": "Jesus Cares commitment forms",
+          "StartAt": "Parallel",
+          "States": {
+            "Parallel": {
+              "Type": "Parallel",
+              "Next": "Final State",
+              "Branches": [
+                {
+                  "StartAt": "AutoReply",
+                  "States": {
+                    "AutoReply": {
+                      "Type": "Task",
+                      "Resource": !GetAtt ReplyFunction.Arn,
+                      "End": true
+                    }
+                  }
+                },
+                {
+                  "StartAt": "WriteSheet",
+                  "States": {
+                    "WriteSheet": {
+                      "Type": "Task",
+                      "Resource": !GetAtt WriteSheetFunction.Arn,
+                      "End": true
+                    }
+                  }
+                }
+              ]
+            },
+            "Final State": {
+              "Type": "Pass",
+              "End": true
+            }
+          }
+        }
+      RoleArn: !Ref StateMachineRole
