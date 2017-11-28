@@ -1,5 +1,14 @@
 AWSTemplateFormatVersion: 2010-09-09
 Transform: 'AWS::Serverless-2016-10-31'
+Parameters:
+  GoogleClientEmail:
+    Type: String
+  GooglePrivateKeyEncrypted:
+    Type: String
+  GoogleSpreadsheetId:
+    Type: String
+  KmsKeyArn:
+    Type: String
 Resources:
   ReplyFunction:
     Type: 'AWS::Serverless::Function'
@@ -10,10 +19,41 @@ Resources:
       Description: Sends an email to the user after commitment.
       MemorySize: 128
       Timeout: 3
-      Role: !Ref ReplyFunctionRole
+      Role: !GetAtt ReplyFunctionRole.Arn
       Tags:
         group: jesuscares
       Tracing: Active
+  ReplyFunctionRole:
+    Type: 'AWS::IAM::Role'
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          -
+            Effect: "Allow"
+            Principal:
+              Service:
+                - "lambda.amazonaws.com"
+            Action:
+              - "sts:AssumeRole"
+      ManagedPolicyArns:
+          - 'arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole'
+          - 'arn:aws:iam::aws:policy/AWSXrayWriteOnlyAccess'
+      Policies:
+        - PolicyDocument:
+              {
+                  "Version": "2012-10-17",
+                  "Statement": [
+                      {
+                          "Effect": "Allow",
+                          "Action": [
+                              "ses:SendTemplatedEmail"
+                          ],
+                          "Resource": "*"
+                      }
+                  ]
+              }
+          PolicyName: ReplyFunctionPolicy
   WriteSheetFunction:
     Type: 'AWS::Serverless::Function'
     Properties:
@@ -23,7 +63,7 @@ Resources:
       Description: Writes a Google sheet with a user's commitment form information.
       MemorySize: 128
       Timeout: 10
-      Role: !Ref WriteSheetFunctionRole
+      Role: !GetAtt WriteSheetFunctionRole.Arn
       Environment:
         Variables:
           CLIENT_EMAIL: !Ref GoogleClientEmail
@@ -33,12 +73,27 @@ Resources:
         group: jesuscares
       Tracing: Active
       KmsKeyArn: !Ref KmsKeyArn
+  WriteSheetFunctionRole:
+    Type: 'AWS::IAM::Role'
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          -
+            Effect: "Allow"
+            Principal:
+              Service:
+                - "lambda.amazonaws.com"
+            Action:
+              - "sts:AssumeRole"
+      ManagedPolicyArns:
+        - 'arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole'
+        - 'arn:aws:iam::aws:policy/AWSXrayWriteOnlyAccess'
   Api:
     Type: 'AWS::Serverless::Api'
     Properties:
       StageName: prod
-      DefinitionBody: |-
-        ---
+      DefinitionBody:
         swagger: "2.0"
         info:
           version: "2017-09-07T16:55:49Z"
@@ -62,20 +117,20 @@ Resources:
                 schema:
                   $ref: "#/definitions/CommitmentFormJSON"
               responses:
-                200:
+                '200':
                   description: "Request was successful. Form will be processed."
                   schema:
                     $ref: "#/definitions/Response"
-                400:
+                '400':
                   description: "Request was unsuccessful, client error"
                   schema:
                     $ref: "#/definitions/Response"
-                500:
+                '500':
                   description: "Request was unsuccessful, server error"
                   schema:
                     $ref: "#/definitions/Response"
               x-amazon-apigateway-integration:
-                credentials: !Ref ApiGatewayStepFunctionsRole
+                credentials: !GetAtt ApiGatewayStepFunctionsRole.Arn
                 responses:
                   4\d{2}:
                     statusCode: "400"
@@ -98,17 +153,19 @@ Resources:
                   !Join
                     - ''
                     - - 'arn:aws:apigateway:'
-                    - - !Ref "AWS::Region"
-                    - - ':states:action/StartExecution'
+                      - !Ref 'AWS::Region'
+                      - ':states:action/StartExecution'
                 passthroughBehavior: "when_no_templates"
                 httpMethod: "POST"
                 requestTemplates:
-                  !Join
-                    - ''
-                    - - 'application/json: "{\n    \"input\": \"$util.escapeJavaScript($input.json('$'))\"\
-                      ,\n    \"stateMachineArn\": '
-                      - !Ref StateMachine
-                      - \\n} "
+                  application/json:
+                    !Join
+                      - ''
+                      - - "{\n    \"input\": \"$util.escapeJavaScript($input.json('$'))\"\
+                      ,\n    \"stateMachineArn\": \""
+                        - !Ref StateMachine
+                        - "\"\
+                        \n} "
                 type: "aws"
         definitions:
           Response:
@@ -125,7 +182,6 @@ Resources:
             - "commitment"
             - "email"
             - "first-name"
-            - "language"
             - "last-name"
             - "type"
             properties:
@@ -208,47 +264,78 @@ Resources:
               statusCode: "500"
             properties:
               description: "Request was unsuccessful, server error"
-      CacheClusterEnabled: false
-      Variables:
-        name: prod
+  ApiGatewayStepFunctionsRole:
+    Type: 'AWS::IAM::Role'
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          -
+            Effect: "Allow"
+            Principal:
+              Service:
+                - "apigateway.amazonaws.com"
+            Action:
+              - "sts:AssumeRole"
+        ManagedPolicyArns:
+          - 'arn:aws:iam::aws:policy/service-role/AmazonAPIGatewayPushToCloudWatchLogs'
+        Policies:
+          PolicyDocument:
+            {
+                "Version": "2012-10-17",
+                "Statement": [
+                    {
+                        "Effect": "Allow",
+                        "Action": [
+                            "states:StartExecution"
+                        ],
+                        "Resource": [
+                            !Ref StateMachine
+                        ]
+                    }
+                ]
+            }
+          PolicyName: StateMachineStartExecution
+    DependsOn: StateMachine
   StateMachine:
     Type: 'AWS::StepFunctions::StateMachine'
     Properties:
-      DefinitionString: |-
-        {
-          "Comment": "Jesus Cares commitment forms",
-          "StartAt": "Parallel",
-          "States": {
-            "Parallel": {
-              "Type": "Parallel",
-              "Next": "Final State",
-              "Branches": [
-                {
-                  "StartAt": "AutoReply",
-                  "States": {
-                    "AutoReply": {
-                      "Type": "Task",
-                      "Resource": !GetAtt ReplyFunction.Arn,
-                      "End": true
-                    }
-                  }
-                },
-                {
-                  "StartAt": "WriteSheet",
-                  "States": {
-                    "WriteSheet": {
-                      "Type": "Task",
-                      "Resource": !GetAtt WriteSheetFunction.Arn,
-                      "End": true
-                    }
-                  }
-                }
-              ]
-            },
-            "Final State": {
-              "Type": "Pass",
-              "End": true
-            }
-          }
-        }
-      RoleArn: !Ref StateMachineRole
+      DefinitionString:
+        !Sub
+          - {"Comment":"Jesus Cares commitment forms","StartAt":"Parallel","States":{"Parallel":{"Type":"Parallel","Next":"FinalState","Branches":[{"StartAt":"Reply","States":{"AutoReply":{"Type":"Task","Resource":"${replyLambdaArn}","End":true}}},{"StartAt":"WriteSheet","States":{"WriteSheet":{"Type":"Task","Resource":"${writeSheetLambdaArn}","End":true}}}]},"FinalState":{"Type":"Pass","End":true}}}
+          - {replyLambdaArn: !GetAtt ReplyFunction.Arn, writeSheetLambdaArn: !GetAtt WriteSheetFunction.Arn}
+      RoleArn: !GetAtt StateMachineRole.Arn
+  StateMachineRole:
+    Type: 'AWS::IAM::Role'
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          -
+            Effect: "Allow"
+            Principal:
+              Service:
+                -
+                  !Join
+                    - ''
+                    - - 'states.'
+                      - !Ref "AWS::Region"
+                      - '.amazonaws.com'
+            Action:
+              - "sts:AssumeRole"
+      Path: '/service-role/'
+      Policies:
+          - PolicyDocument:
+              {
+                  "Version": "2012-10-17",
+                  "Statement": [
+                      {
+                          "Effect": "Allow",
+                          "Action": [
+                              "lambda:InvokeFunction"
+                          ],
+                          "Resource": "*"
+                      }
+                  ]
+              }
+            PolicyName: LambdaInvoke
