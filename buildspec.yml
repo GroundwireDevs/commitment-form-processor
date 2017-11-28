@@ -10,4 +10,3 @@ phases:
 artifacts:
   files:
     - 'commitment-form-processor.zip' # Sets all the files to be in the artifacts file
-    - 'JesusCaresAPI-prod-swagger-apigateway.yaml'
