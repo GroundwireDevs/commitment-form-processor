@@ -295,7 +295,7 @@ Resources:
                   }
               ]
           }
-          PolicyName: StateMachineStartExecution
+        PolicyName: StateMachineStartExecution
     DependsOn: StateMachine
   StateMachine:
     Type: 'AWS::StepFunctions::StateMachine'
