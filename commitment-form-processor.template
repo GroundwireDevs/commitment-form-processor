@@ -277,24 +277,24 @@ Resources:
                 - "apigateway.amazonaws.com"
             Action:
               - "sts:AssumeRole"
-        ManagedPolicyArns:
-          - 'arn:aws:iam::aws:policy/service-role/AmazonAPIGatewayPushToCloudWatchLogs'
-        Policies:
-          PolicyDocument:
+      ManagedPolicyArns:
+        - 'arn:aws:iam::aws:policy/service-role/AmazonAPIGatewayPushToCloudWatchLogs'
+      Policies:
+        PolicyDocument:
             {
-                "Version": "2012-10-17",
-                "Statement": [
-                    {
-                        "Effect": "Allow",
-                        "Action": [
-                            "states:StartExecution"
-                        ],
-                        "Resource": [
-                            !Ref StateMachine
-                        ]
-                    }
-                ]
-            }
+              "Version": "2012-10-17",
+              "Statement": [
+                  {
+                      "Effect": "Allow",
+                      "Action": [
+                          "states:StartExecution"
+                      ],
+                      "Resource": [
+                          !Ref StateMachine
+                      ]
+                  }
+              ]
+          }
           PolicyName: StateMachineStartExecution
     DependsOn: StateMachine
   StateMachine:
