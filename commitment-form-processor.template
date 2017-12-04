@@ -302,7 +302,7 @@ Resources:
     Properties:
       DefinitionString:
         !Sub
-          - '{"Comment":"Jesus Cares commitment forms","StartAt":"Parallel","States":{"Parallel":{"Type":"Parallel","Next":"FinalState","Branches":[{"StartAt":"Reply","States":{"AutoReply":{"Type":"Task","Resource":"${replyLambdaArn}","End":true}}},{"StartAt":"WriteSheet","States":{"WriteSheet":{"Type":"Task","Resource":"${writeSheetLambdaArn}","End":true}}}]},"FinalState":{"Type":"Pass","End":true}}}'
+          - '{"Comment":"Jesus Cares commitment forms","StartAt":"Parallel","States":{"Parallel":{"Type":"Parallel","Next":"FinalState","Branches":[{"StartAt":"AutoReply","States":{"AutoReply":{"Type":"Task","Resource":"${replyLambdaArn}","End":true}}},{"StartAt":"WriteSheet","States":{"WriteSheet":{"Type":"Task","Resource":"${writeSheetLambdaArn}","End":true}}}]},"FinalState":{"Type":"Pass","End":true}}}'
           - {replyLambdaArn: !GetAtt ReplyFunction.Arn, writeSheetLambdaArn: !GetAtt WriteSheetFunction.Arn}
       RoleArn: !GetAtt StateMachineRole.Arn
   StateMachineRole:
