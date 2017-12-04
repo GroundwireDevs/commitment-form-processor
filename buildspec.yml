@@ -5,7 +5,8 @@ phases:
     commands:
       - ls -l # Logs root directory
       - chmod -R 777 *
+      - zip -r commitment-form-processor.zip .
 
 artifacts:
   files:
-    - '**/*' # Sets all the files to be in the artifacts file
+    - 'commitment-form-processor.zip' # Sets all the files to be in the artifacts file

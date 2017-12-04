@@ -1,0 +1,34 @@
+{
+  "env": {
+    "es6": true,
+    "node": true
+  },
+  "extends": ["eslint:recommended", "plugin:node/recommended", "plugin:security/recommended"],
+  "parserOptions": {
+    "sourceType": "module"
+  },
+  "plugins": ["node", "security"],
+  "rules": {
+    "indent": [
+      "error",
+      "tab"
+    ],
+    "linebreak-style": [
+      "error",
+      "unix"
+    ],
+    "quotes": [
+      "error",
+      "single"
+    ],
+    "semi": [
+      "error",
+      "always"
+    ],
+    "node/exports-style": [
+      "error",
+      "module.exports"
+    ],
+    "no-console": 0
+  }
+}
