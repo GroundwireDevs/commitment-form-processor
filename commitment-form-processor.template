@@ -280,7 +280,7 @@ Resources:
       ManagedPolicyArns:
         - 'arn:aws:iam::aws:policy/service-role/AmazonAPIGatewayPushToCloudWatchLogs'
       Policies:
-        PolicyDocument:
+        - PolicyDocument:
             {
               "Version": "2012-10-17",
               "Statement": [
@@ -295,7 +295,7 @@ Resources:
                   }
               ]
           }
-        PolicyName: StateMachineStartExecution
+          PolicyName: StateMachineStartExecution
     DependsOn: StateMachine
   StateMachine:
     Type: 'AWS::StepFunctions::StateMachine'
