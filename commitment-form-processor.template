@@ -21,7 +21,7 @@ Resources:
       AutoPublishAlias: !Ref Stage
       Description: Sends an email to the user after commitment.
       MemorySize: 128
-      Timeout: 3
+      Timeout: 6
       Role: !GetAtt ReplyFunctionRole.Arn
       Tags:
         group: jesuscares
