@@ -99,6 +99,8 @@ Resources:
       StageName: prod
       DefinitionBody:
         swagger: "2.0"
+        info:
+          title: "JesusCares Forms API"
         basePath: "/prod"
         schemes:
         - "https"
