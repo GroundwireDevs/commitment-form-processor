@@ -1,6 +1,6 @@
 describe('Reply function', function() {
-	const Reply = require('../reply.js');
-	const WriteSheet = require('../write-sheet.js');
+	const Reply = require('../src/reply.js');
+	const WriteSheet = require('../src/write-sheet.js');
 	const event = require('../spec/event.json');
 	const context = require('../spec/context.json');
 
