@@ -1,11 +1,15 @@
 version: 0.2
 
 phases:
+  install:
+    commands:
+      - pip install --upgrade awscli # Upgrade awscli
   build:
     commands:
-      - chmod -R 777 *
-      - zip -r commitment-form-processor.zip .
+      - chmod -R 777 * # Set 777 permissions for all files
+      - zip -r commitment-form-processor.zip . # Zip current directory
+      # Upload and replace Uri values in template
       - aws cloudformation package --template-file commitment-form-processor.template --s3-bucket groundwire --s3-prefix commitment-form-processor --output-template-file commitment-form-processor-replaced.template
 artifacts:
   files:
-    - 'commitment-form-processor-replaced.template'
+    - 'commitment-form-processor-replaced.template' # Output the template with replaced values
