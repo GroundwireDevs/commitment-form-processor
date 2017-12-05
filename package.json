@@ -22,6 +22,6 @@
     "googleapis": "^22.2.0"
   },
   "devDependencies": {
-    "jasmine": "^2.8.0"
+    "lambda-tester": "^3.1.0"
   }
 }
