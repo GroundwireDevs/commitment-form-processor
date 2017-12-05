@@ -15,7 +15,7 @@ Resources:
     Properties:
       Handler: src/reply.handler
       Runtime: nodejs6.10
-      CodeUri: 's3://groundwire/commitment-form-processor/commitment-form-processor.zip'
+      CodeUri: 'commitment-form-processor.zip'
       Description: Sends an email to the user after commitment.
       MemorySize: 128
       Timeout: 3
@@ -59,7 +59,7 @@ Resources:
     Properties:
       Handler: src/write-sheet.handler
       Runtime: nodejs6.10
-      CodeUri: 's3://groundwire/commitment-form-processor/commitment-form-processor.zip'
+      CodeUri: 'commitment-form-processor.zip'
       Description: Writes a Google sheet with a user's commitment form information.
       MemorySize: 128
       Timeout: 10

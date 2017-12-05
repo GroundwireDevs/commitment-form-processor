@@ -3,10 +3,9 @@ version: 0.2
 phases:
   build:
     commands:
-      - ls -l # Logs root directory
       - chmod -R 777 *
       - zip -r commitment-form-processor.zip .
-
+      - aws cloudformation package --template-file commitment-form-processor.template --s3-bucket groundwire --s3-prefix commitment-form-processor --output-template-file commitment-form-processor-replaced.template
 artifacts:
   files:
-    - 'commitment-form-processor.zip' # Sets all the files to be in the artifacts file
+    - 'commitment-form-processor-replaced.template'
