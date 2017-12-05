@@ -19,7 +19,8 @@
   "dependencies": {
     "aws-sdk": "^2.152.0",
     "aws-xray-sdk-core": "^1.1.6",
-    "googleapis": "^22.2.0"
+    "googleapis": "^22.2.0",
+    "jasmine": "^2.8.0"
   },
   "devDependencies": {
     "lambda-tester": "^3.1.0"
