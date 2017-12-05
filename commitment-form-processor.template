@@ -96,7 +96,7 @@ Resources:
   Api:
     Type: 'AWS::Serverless::Api'
     Properties:
-      StageName: prod
+      StageName: !Ref Stage
       DefinitionBody:
         swagger: "2.0"
         info:
