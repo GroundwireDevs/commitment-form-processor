@@ -36,7 +36,6 @@ exports.handler = (event, context, callback) => {
 	sendTemplatedEmail(event.email, templateMapping[event.language][event.type], source).then(function(data) {
 		callback(null, data);
 	}).catch(function(err) {
-		console.error(err);
 		callback(err);
 	});
 };
