@@ -1,11 +1,12 @@
 'use strict';
 const AWSXRay = require('aws-xray-sdk-core');
 const AWS = AWSXRay.captureAWS(require('aws-sdk'));
-const ses = new AWS.SES();
 const templateMapping = require('./../template-map.json');
 
-function sendTemplatedEmail(to, template, source) {
+function sendTemplatedEmail(to, template, source, fromName) {
 	return new Promise(function(resolve, reject) {
+
+		const ses = new AWS.SES({region: process.env.AWS_REGION});
 
 		const params = {
 			Destination: {
@@ -15,11 +16,8 @@ function sendTemplatedEmail(to, template, source) {
 			},
 			Source: source,
 			Template: template,
-			TemplateData: '{}'
+			TemplateData: '{\"fromname\": \"' + fromName + '\"}' // Escapes and double quotes seem to be required by SES
 		};
-
-		console.log(templateMapping);
-		console.log(params);
 
 		ses.sendTemplatedEmail(params, function(err, data) {
 			if (err) reject(Error(err)); // an error occurred
@@ -30,11 +28,22 @@ function sendTemplatedEmail(to, template, source) {
 }
 
 exports.handler = (event, context, callback) => {
-	const source = templateMapping[event.language].fromName + ' <' + templateMapping[event.language].fromAddress + '>';
-	sendTemplatedEmail(event.email, templateMapping[event.language][event.type], source).then(function(data) {
+	if (event.testing === true) {
+		process.env._X_AMZN_TRACE_ID = 'Root=1-5759e988-bd862e3fe1be46a994272793;Parent=53995c3f42cd8ad8;Sampled=1';
+		process.env.AWS_REGION = 'us-west-2';
+	}
+
+	let source;
+
+	try {
+		source = templateMapping[event.language].fromName + ' <' + templateMapping[event.language].fromAddress + '>';
+	}
+	catch (exception) {
+		callback(Error(exception));
+	}
+	sendTemplatedEmail(event.email, templateMapping[event.language][event.type], source, templateMapping[event.language].fromName).then(function(data) {
 		callback(null, data);
 	}).catch(function(err) {
-		console.error(err);
 		callback(err);
 	});
 };
