@@ -32,7 +32,15 @@ exports.handler = (event, context, callback) => {
 		process.env._X_AMZN_TRACE_ID = 'Root=1-5759e988-bd862e3fe1be46a994272793;Parent=53995c3f42cd8ad8;Sampled=1';
 		process.env.AWS_REGION = 'us-west-2';
 	}
-	const source = templateMapping[event.language].fromName + ' <' + templateMapping[event.language].fromAddress + '>';
+
+	let source;
+
+	try {
+		source = templateMapping[event.language].fromName + ' <' + templateMapping[event.language].fromAddress + '>';
+	}
+	catch (exception) {
+		callback(Error(exception));
+	}
 	sendTemplatedEmail(event.email, templateMapping[event.language][event.type], source).then(function(data) {
 		callback(null, data);
 	}).catch(function(err) {
