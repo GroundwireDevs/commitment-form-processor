@@ -3,7 +3,7 @@ const AWSXRay = require('aws-xray-sdk-core');
 const AWS = AWSXRay.captureAWS(require('aws-sdk'));
 const templateMapping = require('./../template-map.json');
 
-function sendTemplatedEmail(to, template, source) {
+function sendTemplatedEmail(to, template, source, fromName) {
 	return new Promise(function(resolve, reject) {
 
 		const ses = new AWS.SES({region: process.env.AWS_REGION});
@@ -16,7 +16,7 @@ function sendTemplatedEmail(to, template, source) {
 			},
 			Source: source,
 			Template: template,
-			TemplateData: '{}'
+			TemplateData: '{\"fromname\": \"' + fromName + '\"}' // Escapes and double quotes seem to be required by SES
 		};
 
 		ses.sendTemplatedEmail(params, function(err, data) {
@@ -41,7 +41,7 @@ exports.handler = (event, context, callback) => {
 	catch (exception) {
 		callback(Error(exception));
 	}
-	sendTemplatedEmail(event.email, templateMapping[event.language][event.type], source).then(function(data) {
+	sendTemplatedEmail(event.email, templateMapping[event.language][event.type], source, templateMapping[event.language].fromName).then(function(data) {
 		callback(null, data);
 	}).catch(function(err) {
 		callback(err);
