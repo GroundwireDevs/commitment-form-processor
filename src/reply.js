@@ -19,9 +19,6 @@ function sendTemplatedEmail(to, template, source) {
 			TemplateData: '{}'
 		};
 
-		console.log(templateMapping);
-		console.log(params);
-
 		ses.sendTemplatedEmail(params, function(err, data) {
 			if (err) reject(Error(err)); // an error occurred
 			else resolve(data); // successful response
