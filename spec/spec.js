@@ -1,3 +1,4 @@
+'use strict';
 const LambdaTester = require('lambda-tester');
 
 const myHandler = require('../src/reply').handler;
