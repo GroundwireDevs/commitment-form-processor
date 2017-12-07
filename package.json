@@ -23,7 +23,6 @@
   },
   "devDependencies": {
     "jasmine": "^2.8.0",
-    "lambda-tester": "^3.1.0",
-    "nyc": "^11.3.0"
+    "lambda-tester": "^3.1.0"
   }
 }
