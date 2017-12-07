@@ -27,7 +27,7 @@ describe( 'Reply function', function() {
 		// Valid data with age
 		return LambdaTester( myHandler )
 			.event( {'language': 'en','type':'salvation','firstName':'Kenan','lastName':'Scott','e-mail':'kenans@groundwire.net','commitment':'no'})
-			.expectResult().toThrow();
+			.expectError();
 
 	});
 
