@@ -124,6 +124,9 @@ Resources:
                   description: "Request was successful. Form will be processed."
                   schema:
                     $ref: "#/definitions/Response"
+                  headers:
+                    Access-Control-Allow-Origin:
+                      type: "string"
                 '400':
                   description: "Request was unsuccessful, client error"
                   schema:
@@ -149,6 +152,8 @@ Resources:
                         \n}"
                   2\d{2}:
                     statusCode: "200"
+                    responseParameters:
+                      method.response.header.Access-Control-Allow-Origin: "'*'"
                     responseTemplates:
                       application/json: "#set($inputRoot = $input.path('$'))\n{\n  \"success\"\
                         \ : true,\n  \"message\" : 'Request successful'\n}"
@@ -170,6 +175,35 @@ Resources:
                         - "\"\
                         \n} "
                 type: "aws"
+            options:
+              consumes:
+              - "application/json"
+              produces:
+              - "application/json"
+              responses:
+                200:
+                  description: "200 response"
+                  schema:
+                    $ref: "#/definitions/Empty"
+                  headers:
+                    Access-Control-Allow-Origin:
+                      type: "string"
+                    Access-Control-Allow-Methods:
+                      type: "string"
+                    Access-Control-Allow-Headers:
+                      type: "string"
+              x-amazon-apigateway-integration:
+                responses:
+                  default:
+                    statusCode: "200"
+                    responseParameters:
+                      method.response.header.Access-Control-Allow-Methods: "'POST,OPTIONS'"
+                      method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'"
+                      method.response.header.Access-Control-Allow-Origin: "'*'"
+                passthroughBehavior: "when_no_match"
+                requestTemplates:
+                  application/json: "{\"statusCode\": 200}"
+                type: "mock"
         definitions:
           Response:
             type: "object"
