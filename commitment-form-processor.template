@@ -27,7 +27,7 @@ Resources:
       Runtime: nodejs6.10
       CodeUri: 'commitment-form-processor.zip'
       AutoPublishAlias: !Ref Stage
-      Description: 'Sends an email to the user after commitment.'
+      Description: Sends an email to the user after commitment.
       MemorySize: 128
       Timeout: 6
       Role: !GetAtt ReplyFunctionRole.Arn
@@ -72,7 +72,7 @@ Resources:
       Runtime: nodejs6.10
       CodeUri: 'commitment-form-processor.zip'
       AutoPublishAlias: !Ref Stage
-      Description: 'Writes a Google sheet with a user's commitment form information.'
+      Description: Writes a Google sheet with a user's commitment form information.
       MemorySize: 128
       Timeout: 10
       Role: !GetAtt WriteSheetFunctionRole.Arn
