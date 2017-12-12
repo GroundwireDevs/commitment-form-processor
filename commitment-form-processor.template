@@ -11,6 +11,14 @@ Parameters:
     Type: String
   Stage:
     Type: String
+  ForwardAddress:
+    Type: String
+  EmailBucket:
+    Type: String
+  ForwardFromName:
+    Type: String
+  ForwardFromAddress:
+    Type: String
 Resources:
   ReplyFunction:
     Type: 'AWS::Serverless::Function'
@@ -93,6 +101,79 @@ Resources:
       ManagedPolicyArns:
         - 'arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole'
         - 'arn:aws:iam::aws:policy/AWSXrayWriteOnlyAccess'
+  ForwardFunction:
+    Type: 'AWS::Serverless::Function'
+    Properties:
+      Handler: src/reply.handler
+      Runtime: nodejs6.10
+      CodeUri: 'commitment-form-processor.zip'
+      AutoPublishAlias: !Ref Stage
+      Description: Forwards emails from the email address used in commitment form processor reply handler to the specified email address.
+      MemorySize: 128
+      Timeout: 8
+      Role: !GetAtt ForwardFunctionRole.Arn
+      Environment:
+        Variables:
+          FORWARD_ADDRESS: !Ref ForwardAddress
+          EMAIL_BUCKET: !Ref EmailBucket
+          FROM_NAME: !Ref ForwardFromName
+          FROM_ADDRESS: !Ref ForwardFromAddress
+      Tags:
+        group: jesuscares
+      Tracing: Active
+  ForwardFunctionRole:
+    Type: 'AWS::IAM::Role'
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          -
+            Effect: "Allow"
+            Principal:
+              Service:
+                - "lambda.amazonaws.com"
+            Action:
+              - "sts:AssumeRole"
+      ManagedPolicyArns:
+        - 'arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole'
+        - 'arn:aws:iam::aws:policy/AWSXrayWriteOnlyAccess'
+      Policies:
+        - PolicyDocument:
+              {
+                  "Version": "2012-10-17",
+                  "Statement": [
+                      {
+                          "Effect": "Allow",
+                          "Action": [
+                              "s3:GetObject"
+                          ],
+                          "Resource": [
+                              !Join
+                                - ''
+                                - - 'arn:aws:s3:::'
+                                  - !Ref EmailBucket
+                                  - '/*'
+                          ]
+                      }
+                  ]
+              }
+          PolicyName: ForwardFunctionS3Policy
+        - PolicyDocument:
+              {
+                  "Version": "2012-10-17",
+                  "Statement": [
+                      {
+                          "Effect": "Allow",
+                          "Action": [
+                              "ses:SendEmail"
+                          ],
+                          "Resource": [
+                              "*"
+                          ]
+                      }
+                  ]
+              }
+          PolicyName: ForwardFunctionSesPolicy
   Api:
     Type: 'AWS::Serverless::Api'
     Properties:
