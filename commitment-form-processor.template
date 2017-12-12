@@ -156,7 +156,6 @@ Resources:
                       - ''
                       - - 'arn:aws:s3:::'
                         - !Ref EmailBucket
-                        - '/'
                         - '*'
         -
           PolicyName: ForwardFunctionSesPolicy
