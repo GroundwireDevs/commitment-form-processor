@@ -9,7 +9,7 @@ function getFile(messageId) {
 
 		const s3 = new AWS.S3();
 		const params = {
-			Bucket: process.env.BUCKET,
+			Bucket: process.env.EMAIL_BUCKET,
 			Key: process.env.FROM_ADDRESS + '/' + messageId
 		};
 		s3.getObject(params, function(err, file) {
