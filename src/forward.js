@@ -62,7 +62,6 @@ function s3FileToString(file) {
 }
 
 exports.handler = (event, context, callback) => {
-
 	console.log('Subject line = ' + event.Records[0].ses.mail.commonHeaders.subject); // Log subject
 	console.log('Incoming message ID = ' + event.Records[0].ses.mail.messageId); // Log message ID
 
