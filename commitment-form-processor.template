@@ -1,4 +1,4 @@
-AWSTemplateFormatVersion: 2010-09-09
+AWSTemplateFormatVersion: '2010-09-09'
 Transform: 'AWS::Serverless-2016-10-31'
 Parameters:
   GoogleClientEmail:
@@ -38,7 +38,7 @@ Resources:
     Type: 'AWS::IAM::Role'
     Properties:
       AssumeRolePolicyDocument:
-        Version: 2012-10-17
+        Version: '2012-10-17'
         Statement:
           -
             Effect: Allow
@@ -55,7 +55,7 @@ Resources:
         -
           PolicyName: ReplyFunctionPolicy
           PolicyDocument:
-            Version: 2012-10-17
+            Version: '2012-10-17'
             Statement:
               -
                 Effect: Allow
@@ -89,7 +89,7 @@ Resources:
     Type: 'AWS::IAM::Role'
     Properties:
       AssumeRolePolicyDocument:
-        Version: 2012-10-17
+        Version: '2012-10-17'
         Statement:
           -
             Effect: Allow
@@ -126,7 +126,7 @@ Resources:
     Type: 'AWS::IAM::Role'
     Properties:
       AssumeRolePolicyDocument:
-        Version: 2012-10-17
+        Version: '2012-10-17'
         Statement:
           -
             Effect: Allow
@@ -143,7 +143,7 @@ Resources:
         -
           PolicyName: ForwardFunctionS3Policy
           PolicyDocument:
-            Version: 2012-10-17
+            Version: '2012-10-17'
             Statement:
               -
                 Effect: Allow
@@ -160,7 +160,7 @@ Resources:
         -
           PolicyName: ForwardFunctionSesPolicy
           PolicyDocument:
-            Version: 2012-10-17
+            Version: '2012-10-17'
             Statement:
               -
                 Effect: Allow
@@ -382,7 +382,7 @@ Resources:
     Type: 'AWS::IAM::Role'
     Properties:
       AssumeRolePolicyDocument:
-        Version: 2012-10-17
+        Version: '2012-10-17'
         Statement:
           -
             Effect: Allow
@@ -398,7 +398,7 @@ Resources:
         -
           PolicyName: StateMachineStartExecution
           PolicyDocument:
-            Version: 2012-10-17
+            Version: '2012-10-17'
             Statement:
               -
                 Effect: Allow
@@ -421,7 +421,7 @@ Resources:
     Type: 'AWS::IAM::Role'
     Properties:
       AssumeRolePolicyDocument:
-        Version: 2012-10-17
+        Version: '2012-10-17'
         Statement:
           -
             Effect: Allow
@@ -441,7 +441,7 @@ Resources:
           -
             PolicyName: LambdaInvoke
             PolicyDocument:
-              Version: 2012-10-17
+              Version: '2012-10-17'
               Statement:
                 -
                   Effect: Allow
