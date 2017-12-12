@@ -12,3 +12,46 @@
     "fromAddress": "informacion@xn--ajessleimporta-orb.com"
   }
 }
+
+{
+  "type": "object",
+  "title": "commitment-form-processor template map",
+  "description": "Should be a ISO 639-1 Code",
+  "properties": {
+    "salvation": {
+      "type": "string",
+      "description": "The email template to be sent for a salvation commitment.",
+      "examples": [
+        "EnSalvationResponse"
+      ]
+    },
+    "recommitment": {
+      "type": "string",
+      "description": "The email template to be sent for a recommitment commitment.",
+      "examples": [
+        "EnRecommitmentResponse"
+      ]
+    },
+    "fromName": {
+      "type": "string",
+      "description": "The name that should show on the email that is sent.",
+      "examples": [
+        "Jesus Cares"
+      ]
+    },
+    "fromAddress": {
+      "type": "string",
+      "description": "The email address to send the email from.",
+      "examples": [
+        "info@jesuscares.com"
+      ]
+    }
+
+  },
+  "required": [
+    "salvation",
+    "recommitment",
+    "fromName",
+    "fromAddress"
+  ]
+}
