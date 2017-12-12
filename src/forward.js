@@ -81,7 +81,6 @@ exports.handler = (event, context, callback) => {
 			console.log(data);
 			callback(null, data);
 		}).catch(function(error) {
-			console.error(error);
 			callback(error);
 		});
 	}
