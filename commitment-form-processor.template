@@ -38,33 +38,33 @@ Resources:
     Type: 'AWS::IAM::Role'
     Properties:
       AssumeRolePolicyDocument:
-        Version: "2012-10-17"
+        Version: 2012-10-17
         Statement:
           -
-            Effect: "Allow"
+            Effect: Allow
             Principal:
               Service:
-                - "lambda.amazonaws.com"
+                - lambda.amazonaws.com
             Action:
-              - "sts:AssumeRole"
+              -
+                sts:AssumeRole
       ManagedPolicyArns:
           - 'arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole'
           - 'arn:aws:iam::aws:policy/AWSXrayWriteOnlyAccess'
       Policies:
-        - PolicyDocument:
-              {
-                  "Version": "2012-10-17",
-                  "Statement": [
-                      {
-                          "Effect": "Allow",
-                          "Action": [
-                              "ses:SendTemplatedEmail"
-                          ],
-                          "Resource": "*"
-                      }
-                  ]
-              }
+        -
           PolicyName: ReplyFunctionPolicy
+          PolicyDocument:
+            Version: 2012-10-17
+            Statement:
+              -
+                Effect: Allow
+                Action:
+                  -
+                    ses:SendTemplatedEmail
+                Resource:
+                  -
+                    '*'
   WriteSheetFunction:
     Type: 'AWS::Serverless::Function'
     Properties:
@@ -89,15 +89,16 @@ Resources:
     Type: 'AWS::IAM::Role'
     Properties:
       AssumeRolePolicyDocument:
-        Version: "2012-10-17"
+        Version: 2012-10-17
         Statement:
           -
-            Effect: "Allow"
+            Effect: Allow
             Principal:
               Service:
-                - "lambda.amazonaws.com"
+                - lambda.amazonaws.com
             Action:
-              - "sts:AssumeRole"
+              -
+                sts:AssumeRole
       ManagedPolicyArns:
         - 'arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole'
         - 'arn:aws:iam::aws:policy/AWSXrayWriteOnlyAccess'
@@ -125,15 +126,16 @@ Resources:
     Type: 'AWS::IAM::Role'
     Properties:
       AssumeRolePolicyDocument:
-        Version: "2012-10-17"
+        Version: 2012-10-17
         Statement:
           -
-            Effect: "Allow"
+            Effect: Allow
             Principal:
               Service:
-                - "lambda.amazonaws.com"
+                - lambda.amazonaws.com
             Action:
-              - "sts:AssumeRole"
+              -
+                sts:AssumeRole
       ManagedPolicyArns:
         - 'arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole'
         - 'arn:aws:iam::aws:policy/AWSXrayWriteOnlyAccess'
@@ -380,34 +382,32 @@ Resources:
     Type: 'AWS::IAM::Role'
     Properties:
       AssumeRolePolicyDocument:
-        Version: "2012-10-17"
+        Version: 2012-10-17
         Statement:
           -
-            Effect: "Allow"
+            Effect: Allow
             Principal:
               Service:
-                - "apigateway.amazonaws.com"
+                - apigateway.amazonaws.com
             Action:
-              - "sts:AssumeRole"
+              -
+                sts:AssumeRole
       ManagedPolicyArns:
         - 'arn:aws:iam::aws:policy/service-role/AmazonAPIGatewayPushToCloudWatchLogs'
       Policies:
-        - PolicyDocument:
-            {
-              "Version": "2012-10-17",
-              "Statement": [
-                  {
-                      "Effect": "Allow",
-                      "Action": [
-                          "states:StartExecution"
-                      ],
-                      "Resource": [
-                          !Ref StateMachine
-                      ]
-                  }
-              ]
-          }
+        -
           PolicyName: StateMachineStartExecution
+          PolicyDocument:
+            Version: 2012-10-17,
+            Statement:
+              -
+                Effect: Allow
+                Action:
+                  -
+                    states:StartExecution
+                Resource:
+                  -
+                    !Ref StateMachine
     DependsOn: StateMachine
   StateMachine:
     Type: 'AWS::StepFunctions::StateMachine'
@@ -421,10 +421,10 @@ Resources:
     Type: 'AWS::IAM::Role'
     Properties:
       AssumeRolePolicyDocument:
-        Version: "2012-10-17"
+        Version: 2012-10-17
         Statement:
           -
-            Effect: "Allow"
+            Effect: Allow
             Principal:
               Service:
                 -
@@ -434,20 +434,20 @@ Resources:
                       - !Ref "AWS::Region"
                       - '.amazonaws.com'
             Action:
-              - "sts:AssumeRole"
+              -
+                sts:AssumeRole
       Path: '/service-role/'
       Policies:
-          - PolicyDocument:
-              {
-                  "Version": "2012-10-17",
-                  "Statement": [
-                      {
-                          "Effect": "Allow",
-                          "Action": [
-                              "lambda:InvokeFunction"
-                          ],
-                          "Resource": "*"
-                      }
-                  ]
-              }
+          -
             PolicyName: LambdaInvoke
+            PolicyDocument:
+              Version: 2012-10-17
+              Statement:
+                -
+                  Effect: Allow
+                  Action:
+                    -
+                      lambda:InvokeFunction
+                  Resource:
+                    -
+                      '*'
