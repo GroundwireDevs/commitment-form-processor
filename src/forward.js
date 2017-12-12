@@ -78,7 +78,6 @@ exports.handler = (event, context, callback) => {
 			sendEmailInput.text = mail.text;
 			return sendEmailInput;
 		}).then(sendEmail).then(function(data) {
-			console.log(data);
 			callback(null, data);
 		}).catch(function(error) {
 			callback(error);
