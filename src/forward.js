@@ -53,14 +53,12 @@ function sendEmail(input) {
 }
 
 function s3FileToString(file) {
-
 	return new Promise(function(resolve, reject) {
 
 		const objectData = file.Body.toString('utf-8');
 		resolve(objectData);
 
 	});
-
 }
 
 exports.handler = (event, context, callback) => {
