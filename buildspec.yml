@@ -12,4 +12,5 @@ phases:
       - aws cloudformation package --template-file commitment-form-processor.template --s3-bucket groundwire --s3-prefix commitment-form-processor --output-template-file commitment-form-processor-replaced.template
 artifacts:
   files:
-    - 'commitment-form-processor-replaced.template' # Output the template with replaced values
+    # Output the template with replaced values
+    - 'commitment-form-processor-replaced.template'
