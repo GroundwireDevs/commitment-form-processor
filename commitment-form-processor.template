@@ -167,7 +167,7 @@ Resources:
                     ses:SendEmail
                 Resource:
                   -
-                    *
+                    '*'
   Api:
     Type: 'AWS::Serverless::Api'
     Properties:
