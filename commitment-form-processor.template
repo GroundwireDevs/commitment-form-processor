@@ -138,42 +138,36 @@ Resources:
         - 'arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole'
         - 'arn:aws:iam::aws:policy/AWSXrayWriteOnlyAccess'
       Policies:
-        - PolicyDocument:
-              {
-                  "Version": "2012-10-17",
-                  "Statement": [
-                      {
-                          "Effect": "Allow",
-                          "Action": [
-                              "s3:GetObject"
-                          ],
-                          "Resource": [
-                              !Join
-                                - ''
-                                - - 'arn:aws:s3:::'
-                                  - !Ref EmailBucket
-                                  - '/*'
-                          ]
-                      }
-                  ]
-              }
+        -
           PolicyName: ForwardFunctionS3Policy
-        - PolicyDocument:
-              {
-                  "Version": "2012-10-17",
-                  "Statement": [
-                      {
-                          "Effect": "Allow",
-                          "Action": [
-                              "ses:SendEmail"
-                          ],
-                          "Resource": [
-                              "*"
-                          ]
-                      }
-                  ]
-              }
+          PolicyDocument:
+            Version: 2012-10-17,
+            Statement:
+              -
+                Effect: Allow
+                Action:
+                  -
+                    s3:GetObject
+                Resource:
+                  -
+                    !Join
+                      - ''
+                      - - 'arn:aws:s3:::'
+                        - !Ref EmailBucket
+                        - '/*'
+        -
           PolicyName: ForwardFunctionSesPolicy
+          PolicyDocument:
+            Version: 2012-10-17,
+            Statement:
+              -
+                Effect: Allow
+                Action:
+                  -
+                    ses:SendEmail
+                Resource:
+                  -
+                    *
   Api:
     Type: 'AWS::Serverless::Api'
     Properties:
