@@ -105,7 +105,7 @@ Resources:
   ForwardFunction:
     Type: 'AWS::Serverless::Function'
     Properties:
-      Handler: src/reply.handler
+      Handler: src/forward.handler
       Runtime: nodejs6.10
       CodeUri: 'commitment-form-processor.zip'
       AutoPublishAlias: !Ref Stage
