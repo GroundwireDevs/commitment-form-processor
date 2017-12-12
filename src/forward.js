@@ -21,8 +21,8 @@ function getFile(messageId) {
 }
 
 function sendEmail(input) {
-
 	return new Promise(function(resolve, reject) {
+
 		const to = input.to;
 		const subject = input.subject;
 		const text = input.text;
@@ -54,7 +54,6 @@ function sendEmail(input) {
 		});
 
 	});
-
 }
 
 function s3FileToString(file) {
