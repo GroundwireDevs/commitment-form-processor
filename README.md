@@ -2,17 +2,24 @@
 
 ## Overview
 
-1. User submits a commitment form, such as from [JesusCares Forms](http://github.com/GroundwireDevs/jesuscares-forms). Request is directed by CloudFront through API gateway (defined in this repository) into a Step Functions state machine (also defined).
+1. User submits a commitment form, such as from [JesusCares Forms](https://github.com/GroundwireDevs/jesuscares-forms). Request is directed through API gateway (defined in this repository) into an AWS Step Functions state machine (also defined).
 2. Asynchronous
    * Email is sent to user with more information.
    * User's information is written to Google Sheets.
 3. The state machine completes.
+4. If the email is responded to, it gets forwarded to ForwardAddress (set in CloudFormation parameters)
 
 ## Deployment
 
-1. Create the deployment package by simply zipping root of the repository. Make sure that file permissions are correct, see buildspec.yml for an example of how CodeBuild does it.
-2. Upload the deployment package to S3 and change commitment-form-processor.template CodeUri values to the package's S3 URI.
-3. Create a new CloudFormation stack with commitment-form-processor.template, fill in all parameters.
+1. Clone the repository, install package with `npm install`.
+2. Test the package, `npm test`.
+3. Remove devDependencies using `npm prune --production`.
+4. Make sure that the file permissions are correct, for example, `chmod -R 777 *`
+5. Zip the package's contents, for example, `zip -r commitment-form-processor.zip .`.
+6. Upload the deployment package to S3 and change commitment-form-processor.template CodeUri values to the package's S3 URI.
+7. Create a new CloudFormation stack with commitment-form-processor.template, fill in all parameters.
+8. [Create and/or update email templates with AWS CLI.](https://github.com/GroundwireDevs/commitment-form-processor/wiki/Creating-and-updating-email-templates)
+9. 
 
 ## Groundwire-specific Deployment
 
