@@ -23,26 +23,22 @@ function getFile(messageId) {
 function sendEmail(input) {
 	return new Promise(function(resolve, reject) {
 
-		const to = input.to;
-		const subject = input.subject;
-		const text = input.text;
-
 		const params = {
 			Destination: {
 				ToAddresses: [
-					to
+					input.to
 				]
 			},
 			Message: {
 				Body: {
 					Text: {
 						Charset: 'UTF-8',
-						Data: text
+						Data: input.text
 					}
 				},
 				Subject: {
 					Charset: 'UTF-8',
-					Data: subject
+					Data: input.subject
 				}
 			},
 			Source: process.env.FROM_NAME + ' <' + process.env.FROM_ADDRESS + '>',
