@@ -16,7 +16,7 @@
 
 ## Groundwire-specific Deployment
 
-1. Builds and deployments are automated by CodePipeline. Changes to the prod branch will run the build and deploy to dev automatically. Approve in order to deploy to prod.
+1. Builds and deployments are automated by CodePipeline. Changes to the prod branch will run the build and deploy to dev CloudFormation stack automatically. Approve in order to deploy to prod.
 
 2. Changes to responses templates should be done manually using awscli.
 
