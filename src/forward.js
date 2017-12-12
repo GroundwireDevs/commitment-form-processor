@@ -53,7 +53,7 @@ function sendEmail(input) {
 }
 
 function s3FileToString(file) {
-	return new Promise(function(resolve, reject) {
+	return new Promise(function(resolve) {
 
 		const objectData = file.Body.toString('utf-8');
 		resolve(objectData);
