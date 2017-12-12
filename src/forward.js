@@ -1,4 +1,3 @@
-/*jshint esversion: 6 */
 const simpleParser = require('mailparser').simpleParser;
 const AWSXRay = require('aws-xray-sdk-core');
 const AWS = AWSXRay.captureAWS(require('aws-sdk'));
