@@ -1,0 +1,33 @@
+{
+  "$schema": "http://json-schema.org/draft-06/schema#",
+  "title": "Languages",
+  "description": "Should be an ISO 639-1 code",
+  "type": "object",
+  "patternProperties": {
+    "^[a-zA-Z]{2}$": {
+      "properties": {
+        "salvation": {
+          "type": "string",
+          "description": "The email template to send after a salvation."
+        },
+        "recommitment": {
+          "type": "string",
+          "description": "The email template to send after a recommitment"
+        },
+        "fromName": {
+          "type": "string",
+          "description": "The name to show as the sender, affects email template variable {{fromname}} and From name in email header (not the actual email address)."
+        },
+        "fromAddress": {
+          "type": "string",
+          "description": "The email address to send the email from. This should coincide with the SES Rule email address(es.)"
+        }
+      },
+      "required": [
+        "fromName",
+        "fromAddress"
+      ]
+    }
+  },
+  "additionalProperties": false
+}
