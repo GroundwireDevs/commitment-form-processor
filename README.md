@@ -23,12 +23,3 @@
 8. Upload the deployment package to S3 and change commitment-form-processor.template CodeUri values to the package's S3 URI.
 9. Create a new CloudFormation stack with commitment-form-processor.template, fill in all parameters.
 10. [Set an SES email rule to save email to S3 and trigger the forward Lambda function.](https://github.com/GroundwireDevs/commitment-form-processor/wiki/Setting-the-SES-rule-for-email-forwarding)
-
-
-## Groundwire-specific Deployment
-
-1. Builds and deployments are automated by CodePipeline. Changes to the prod branch will run the build and deploy to dev CloudFormation stack automatically. Approve in order to deploy to prod.
-
-2. Changes to responses templates should be done manually using awscli.
-
-3. Changes to CloudFormation parameters should be done in config.json on S3, see CodePipeline for URI.
