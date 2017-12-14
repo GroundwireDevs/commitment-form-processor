@@ -19,7 +19,7 @@
 6. Upload the deployment package to S3 and change commitment-form-processor.template CodeUri values to the package's S3 URI.
 7. Create a new CloudFormation stack with commitment-form-processor.template, fill in all parameters.
 8. [Create and/or update email templates with AWS CLI.](https://github.com/GroundwireDevs/commitment-form-processor/wiki/Creating-and-updating-email-templates)
-9. 
+9. Ensure that [template-map.json](https://github.com/GroundwireDevs/commitment-form-processor/blob/prod/template-map.json) is set correctly and validates against [template-map.schema.json](https://github.com/GroundwireDevs/commitment-form-processor/blob/prod/template-map.schema.json).
 
 ## Groundwire-specific Deployment
 
