@@ -3,19 +3,19 @@ version: 0.2
 phases:
   install:
     commands:
-      - pip install --upgrade awscli # Upgrade awscli
+      - "pip install --upgrade awscli" # Upgrade awscli
   build:
     commands:
-      - npm install # Install package
+      - "npm install" # Install package
       # If the MAP_LOCATION variable has been set, download the template file, if not, log message.
-      - [[ -z "${MAP_LOCATION}" ]] && echo "MAP_LOCATION not set, test will fail if template-map.json does not already exist" || aws s3 cp $MAP_LOCATION template-map.json
-      - npm test # Test package
-      - npm prune --production # Remove devDependencies from package
-      - chmod -R 777 * # Set 777 permissions for all files
-      - zip -r commitment-form-processor.zip . # Zip current directory
+      - "[[ -z "${MAP_LOCATION}" ]] && echo "MAP_LOCATION not set, test will fail if template-map.json does not already exist" || aws s3 cp $MAP_LOCATION template-map.json"
+      - "npm test" # Test package
+      - "npm prune --production" # Remove devDependencies from package
+      - "chmod -R 777 *" # Set 777 permissions for all files
+      - "zip -r commitment-form-processor.zip ." # Zip current directory
       # Upload and replace Uri values in template
-      - aws cloudformation package --template-file commitment-form-processor.template --s3-bucket groundwire --s3-prefix commitment-form-processor --output-template-file commitment-form-processor-replaced.template
+      - "aws cloudformation package --template-file commitment-form-processor.template --s3-bucket groundwire --s3-prefix commitment-form-processor --output-template-file commitment-form-processor-replaced.template"
 artifacts:
   files:
     # Output the template with replaced values
-    - 'commitment-form-processor-replaced.template'
+    - "commitment-form-processor-replaced.template"
