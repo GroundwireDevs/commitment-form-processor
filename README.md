@@ -20,6 +20,8 @@
 7. Create a new CloudFormation stack with commitment-form-processor.template, fill in all parameters.
 8. [Create and/or update email templates with AWS CLI.](https://github.com/GroundwireDevs/commitment-form-processor/wiki/Creating-and-updating-email-templates)
 9. Ensure that [template-map.json](https://github.com/GroundwireDevs/commitment-form-processor/blob/prod/template-map.json) is set correctly and validates against [template-map.schema.json](https://github.com/GroundwireDevs/commitment-form-processor/blob/prod/template-map.schema.json).
+10. [Set an SES email rule to save email to S3 and trigger the forward Lambda function.](https://github.com/GroundwireDevs/commitment-form-processor/wiki/Setting-the-SES-rule-for-email-forwarding)
+
 
 ## Groundwire-specific Deployment
 
