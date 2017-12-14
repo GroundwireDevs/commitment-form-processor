@@ -11,7 +11,7 @@
 
 ## Deployment
 
-(See [buildspec.yml](https://github.com/GroundwireDevs/commitment-form-processor/blob/prod/buildspec.yml) for see practical ways to accomplish many of these commands automatically.)
+(See [buildspec.yml](https://github.com/GroundwireDevs/commitment-form-processor/blob/prod/buildspec.yml) to see practical ways to accomplish many of these commands automatically.)
 
 1. Clone the repository, install package with `npm install`.
 2. Create a template-map.json file and ensure that it validates against  [template-map.schema.json](https://github.com/GroundwireDevs/commitment-form-processor/blob/prod/template-map.schema.json). This file determines different settings depending on the commitment langauge and type. Place the file into the root of the repository.
