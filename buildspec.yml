@@ -8,7 +8,7 @@ phases:
     commands:
       - "npm install" # Install package
       # If the MAP_LOCATION variable has been set, download the template file, if not, log message.
-      - "[[ -z "${MAP_LOCATION}" ]] && echo "MAP_LOCATION not set, test will fail if template-map.json does not already exist" || aws s3 cp $MAP_LOCATION template-map.json"
+      - "[[ -z \"${MAP_LOCATION}\" ]] && echo \"MAP_LOCATION not set, test will fail if template-map.json does not already exist\" || aws s3 cp $MAP_LOCATION template-map.json"
       - "npm test" # Test package
       - "npm prune --production" # Remove devDependencies from package
       - "chmod -R 777 *" # Set 777 permissions for all files
