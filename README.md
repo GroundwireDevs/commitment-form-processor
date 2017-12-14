@@ -11,15 +11,17 @@
 
 ## Deployment
 
+(See [buildspec.yml](https://github.com/GroundwireDevs/commitment-form-processor/blob/prod/buildspec.yml) for see practical ways to accomplish many of these commands automatically.)
+
 1. Clone the repository, install package with `npm install`.
-2. Test the package, `npm test`.
-3. Remove devDependencies using `npm prune --production`.
-4. Make sure that the file permissions are correct, for example, `chmod -R 777 *`
-5. Zip the package's contents, for example, `zip -r commitment-form-processor.zip .`.
-6. Upload the deployment package to S3 and change commitment-form-processor.template CodeUri values to the package's S3 URI.
-7. Create a new CloudFormation stack with commitment-form-processor.template, fill in all parameters.
-8. [Create and/or update email templates with AWS CLI.](https://github.com/GroundwireDevs/commitment-form-processor/wiki/Creating-and-updating-email-templates)
-9. Ensure that [template-map.json](https://github.com/GroundwireDevs/commitment-form-processor/blob/prod/template-map.json) is set correctly and validates against [template-map.schema.json](https://github.com/GroundwireDevs/commitment-form-processor/blob/prod/template-map.schema.json).
+2. Create a template-map.json file and ensure that it validates against  [template-map.schema.json](https://github.com/GroundwireDevs/commitment-form-processor/blob/prod/template-map.schema.json). This file determines different settings depending on the commitment langauge and type. Place the file into the root of the repository.
+3. [Create and/or update email templates with AWS CLI.](https://github.com/GroundwireDevs/commitment-form-processor/wiki/Creating-and-updating-email-templates)
+4. Test the package, `npm test`.
+5. Remove devDependencies using `npm prune --production`.
+6. Make sure that the file permissions are correct, for example, `chmod -R 777 *`
+7. Zip the package's contents, for example, `zip -r commitment-form-processor.zip .`.
+8. Upload the deployment package to S3 and change commitment-form-processor.template CodeUri values to the package's S3 URI.
+9. Create a new CloudFormation stack with commitment-form-processor.template, fill in all parameters.
 10. [Set an SES email rule to save email to S3 and trigger the forward Lambda function.](https://github.com/GroundwireDevs/commitment-form-processor/wiki/Setting-the-SES-rule-for-email-forwarding)
 
 
