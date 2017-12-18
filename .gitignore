@@ -57,3 +57,6 @@ typings/
 
 # dotenv environment variables file
 .env
+
+# Template map
+template-map.json
